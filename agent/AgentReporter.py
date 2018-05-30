@@ -1,5 +1,6 @@
 import logging
 import re
+from time import time
 
 from agent.Calculator import Calculator
 
@@ -86,7 +87,8 @@ class AgentReporter:
             line = ""
             meta = self._build_context(container)
             meta["@marker"] = ["docker", "docker-logs"]
-            logs = container.logs(stream=True, stderr=True, stdout=True, follow=True, tail=0)
+            logs = container.logs(stream=True, stderr=True, stdout=True, follow=True, tail=0,
+                                  since=time() - self.args.interval)
             for chunk in logs:
 
                 # Append all char into a string until a \n
